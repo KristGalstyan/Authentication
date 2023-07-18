@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator'
 import ApiError from '../ErrorValidation/ApiError.js'
 import { loginService, registrationService } from '../service/user.service.js'
+import { removeToken } from '../service/token.service.js'
 
 export async function register(req, res, next) {
   try {
@@ -39,6 +40,17 @@ export async function login(req, res, next) {
     })
 
     return res.json(userData)
+  } catch (e) {
+    next(e)
+  }
+}
+
+export async function logout(req, res, next) {
+  try {
+    const { refreshToken } = req.cookies
+    const token = await removeToken(refreshToken)
+    res.clearCookie('refreshToken')
+    res.status(200).json(token)
   } catch (e) {
     next(e)
   }
