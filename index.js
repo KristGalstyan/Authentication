@@ -3,6 +3,7 @@ import router from './router/index.js'
 import mongoose from 'mongoose'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import { errormiddleware } from './middleware/error.middleware.js'
 dotenv.config()
 
 const app = express()
@@ -28,6 +29,6 @@ mongoose
     console.log('DB error', err)
   })
 
-app.use('/api', router)
+app.use('/api', router, errormiddleware)
 
 app.listen(process.env.SERVER_URL)

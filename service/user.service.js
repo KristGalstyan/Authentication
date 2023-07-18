@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt'
-import { UserDto } from '../dto/UserDto'
-import { generateTokens, saveToken } from './token.service'
+import { UserDto } from '../dto/UserDto.js'
+import { generateTokens, saveToken } from './token.service.js'
+import UserModel from '../models/user.model.js'
+import ApiError from '../ErrorValidation/ApiError.js'
 
 export async function registrationService(email, password, userName) {
   const candidate = await UserModel.findOne({ email })
   if (candidate) {
-    throw ApiError.BadRequest(
-      `Пользватель с почтовым адресом ${email} уже существует`
-    )
+    throw ApiError.BadRequest(`User with email address ${email} already exists`)
   }
   const hashPassword = await bcrypt.hash(password, 6)
 
