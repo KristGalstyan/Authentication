@@ -10,7 +10,6 @@ export async function register(req, res, next) {
     const { email, password, userName } = req.body
 
     const userData = await registrationService(email, password, userName)
-    res.send('4')
   } catch (e) {
     next(e)
   }
