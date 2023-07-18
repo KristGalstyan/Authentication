@@ -1,11 +1,21 @@
 import { Router } from 'express'
-import { registrValidation } from '../validations/registr.validation.js'
-import { login, logout, register } from '../UserController/UserController.js'
+import {
+  loginValidation,
+  registrValidation
+} from '../validations/registr.validation.js'
+import {
+  login,
+  logout,
+  refresh,
+  register
+} from '../UserController/UserController.js'
 
 const router = new Router()
 
 router.post('/registration', registrValidation, register)
-router.post('/login', registrValidation, login)
-router.post('/login', registrValidation, logout)
+router.post('/login', loginValidation, login)
+router.post('/logout', registrValidation, logout)
+
+router.get('/refresh', refresh)
 
 export default router

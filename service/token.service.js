@@ -46,7 +46,7 @@ export async function saveToken(userId, refreshToken) {
 }
 
 export async function removeToken(refreshToken) {
-  const tokenData = await TokenModel.findOne({ refreshToken })
+  const tokenData = await TokenModel.deleteOne({ refreshToken })
   return tokenData
 }
 

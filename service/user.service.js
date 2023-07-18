@@ -1,6 +1,11 @@
 import bcrypt from 'bcrypt'
 import { UserDto } from '../dto/UserDto.js'
-import { generateTokens, saveToken } from './token.service.js'
+import {
+  findToken,
+  generateTokens,
+  saveToken,
+  validateRefreshToken
+} from './token.service.js'
 import UserModel from '../models/user.model.js'
 import ApiError from '../ErrorValidation/ApiError.js'
 
@@ -40,6 +45,28 @@ export async function loginService(email, password) {
     throw ApiError.BadRequest('Неправильный логин или пароль')
   }
 
+  const userDto = new UserDto(user)
+  const tokens = generateTokens({ ...userDto })
+  await saveToken(userDto.id, tokens.refreshToken)
+
+  return {
+    ...tokens,
+    user: userDto
+  }
+}
+
+export async function refreshService(refreshToken) {
+  if (!refreshToken) {
+    throw ApiError.UnauthorizedError()
+  }
+  const userData = validateRefreshToken(refreshToken)
+  const tokenFromDb = await findToken(refreshToken)
+
+  if (!userData || !tokenFromDb) {
+    throw ApiError.UnauthorizedError()
+  }
+
+  const user = await UserModel.findById(userData.id)
   const userDto = new UserDto(user)
   const tokens = generateTokens({ ...userDto })
   await saveToken(userDto.id, tokens.refreshToken)
