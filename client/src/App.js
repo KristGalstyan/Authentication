@@ -1,40 +1,56 @@
 import './App.css'
-import OAuth2Login from 'react-simple-oauth2-login'
-import axios from 'axios'
+
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import SignIn from './components/sign/SignIn'
+import SignUp from './components/signUp/SignUp'
+import Profile from './components/profile/Profile.jsx'
+import Main from './components/main/Main'
+import { Button } from './components/main/style'
 
 function App() {
-  const onSuccess = async (res) => {
-    const accessToken = res.access_token
-    const result = await fetch(
-      `https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${accessToken}`
-    )
-    const profile = await result.json()
-    const { id, name } = profile
-    const avatar = profile.picture.data.url
-    const callAPI = await axios.post('http://localhost:4444/api/auth/fb', {
-      id,
-      name,
-      avatar
-    })
-    console.log(callAPI)
-  }
-
-  const onFailure = (res) => {
-    console.log(res)
-  }
-
   return (
     <div className="App">
-      <OAuth2Login
-        buttonText="Login with Facebook"
-        authorizationUrl="https://www.facebook.com/dialog/oauth"
-        responseType="token"
-        clientId="139603582496424"
-        redirectUri="http://localhost:3000"
-        scope="public_profile"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-      />
+      <BrowserRouter>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Link
+            to="/"
+            style={{
+              textDecorationLine: 'none',
+              borderRadius: '20px',
+              overflow: 'hidden'
+            }}
+          >
+            <Button>Home</Button>
+          </Link>
+          <Link
+            to="/signUp"
+            style={{
+              textDecorationLine: 'none',
+              overflow: 'hidden',
+              borderRadius: '20px'
+            }}
+          >
+            <Button>Sign Up</Button>
+          </Link>
+
+          <Link
+            to="/signIn"
+            style={{
+              textDecorationLine: 'none',
+              borderRadius: '20px',
+              overflow: 'hidden'
+            }}
+          >
+            <Button>Sign In</Button>
+          </Link>
+        </div>
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/signIn" element={<SignIn />} />
+          <Route path="/signUp" element={<SignUp />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }

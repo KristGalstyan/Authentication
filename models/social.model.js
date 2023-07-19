@@ -1,9 +1,6 @@
 import mongoose from 'mongoose'
 
 const SocialModel = mongoose.Schema({
-  service: {
-    type: String
-  },
   serviceId: {
     type: String
   },
