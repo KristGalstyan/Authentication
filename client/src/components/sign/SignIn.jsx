@@ -1,6 +1,7 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import OAuth2Login from 'react-simple-oauth2-login'
-import axios from 'axios'
+import { useDispatch } from 'react-redux'
 import {
   HomeWrapper,
   BlockAuth,
@@ -20,8 +21,36 @@ import {
   AdWrapper,
   AdText
 } from './styles.js'
+import { useForm } from 'react-hook-form'
+import { $api } from '../../axios.js'
 
 function SignIn() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: ''
+    },
+    mode: 'all'
+  })
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const signSubmit = (values) => {
+    // dispatch(fetchLogin(values))
+    //   .then(() => {
+    //     navigate('/')
+    //   })
+    //   .catch(() => {
+    //     return alert('Не удалось авторизоваться!')
+    //   })
+    reset()
+  }
+
   const onSuccess = async (res) => {
     const accessToken = res.access_token
     const result = await fetch(
@@ -30,7 +59,7 @@ function SignIn() {
     const profile = await result.json()
     const { id, name } = profile
     const avatar = profile.picture.data.url
-    const callAPI = await axios.post('http://localhost:4444/api/auth/fb', {
+    const callAPI = await $api.post('/auth/fb', {
       id,
       name,
       avatar
@@ -51,19 +80,48 @@ function SignIn() {
             How to i get started lorem ipsum dolor at?
           </BlockAuthText>
 
-          <BlockAuthInputWrapper>
-            <InputAuth>
-              <AuthInputImg src="/img/email.png" alt="user" />
-              <Input type="text" placeholder="Email" name="name" />
-            </InputAuth>
-            <InputAuth>
-              <AuthInputImg src="/img/padlock.png" alt="user" />
-              <Input type="text" placeholder="Password" name="name" />
-            </InputAuth>
-          </BlockAuthInputWrapper>
-          <BlockAuthButton>
-            <span>Sign In Now</span>
-          </BlockAuthButton>
+          <form onSubmit={handleSubmit(signSubmit)}>
+            <BlockAuthInputWrapper>
+              <InputAuth
+                style={
+                  !!errors.password?.message
+                    ? { border: '2px solid red' }
+                    : { border: '3px solid black' }
+                }
+              >
+                <AuthInputImg src="/img/email.png" alt="user" />
+                <Input
+                  {...register('email', { required: 'Укажите E-Mail' })}
+                  type="email"
+                  placeholder="Email"
+                  name="email"
+                />
+              </InputAuth>
+              <InputAuth
+                style={
+                  !!errors.password?.message
+                    ? { border: '2px solid red' }
+                    : { border: '3px solid black' }
+                }
+              >
+                <AuthInputImg src="/img/padlock.png" alt="user" />
+                <Input
+                  {...register('email', { required: 'Укажите Password' })}
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                />
+              </InputAuth>
+            </BlockAuthInputWrapper>
+            <BlockAuthButton
+              disabled={!isValid}
+              style={
+                !isValid ? { cursor: 'not-allowed' } : { cursor: 'pointer' }
+              }
+            >
+              <span>Sign In Now</span>
+            </BlockAuthButton>
+          </form>
           <BlockAuthOther>
             <AuthOtherText>SignIn with Other</AuthOtherText>
             <AuthOtherSocial>

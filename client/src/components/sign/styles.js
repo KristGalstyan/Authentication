@@ -74,7 +74,6 @@ export const BlockAuthInputWrapper = styled.div`
   margin-bottom: 15px;
 `
 export const InputAuth = styled.div`
-  border: 3px solid black;
   height: 50px;
   border-radius: 30px;
   display: flex;

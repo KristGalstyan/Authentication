@@ -1,6 +1,5 @@
 import React from 'react'
 import OAuth2Login from 'react-simple-oauth2-login'
-import axios from 'axios'
 import {
   HomeWrapper,
   BlockAuth,
@@ -20,6 +19,7 @@ import {
   AdWrapper,
   AdText
 } from '../sign/styles'
+import { $api } from '../../axios'
 
 function SignUp() {
   const onSuccess = async (res) => {
@@ -30,7 +30,7 @@ function SignUp() {
     const profile = await result.json()
     const { id, name } = profile
     const avatar = profile.picture.data.url
-    const callAPI = await axios.post('http://localhost:4444/api/auth/fb', {
+    const callAPI = await $api.post('/auth/fb', {
       id,
       name,
       avatar
