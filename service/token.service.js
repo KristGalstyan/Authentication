@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import TokenModel from '../models/token.model.js'
+import TokenModel from '../models/tokenUser.model.js'
 
 export function generateTokens(payload) {
   const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {

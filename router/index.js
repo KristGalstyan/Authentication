@@ -5,6 +5,7 @@ import {
 } from '../validations/registr.validation.js'
 import {
   login,
+  loginWithFacebook,
   logout,
   refresh,
   register
@@ -15,6 +16,7 @@ const router = new Router()
 router.post('/registration', registrValidation, register)
 router.post('/login', loginValidation, login)
 router.post('/logout', registrValidation, logout)
+router.post('/auth/fb', loginWithFacebook)
 
 router.get('/refresh', refresh)
 

@@ -1,14 +1,22 @@
 import './App.css'
 import OAuth2Login from 'react-simple-oauth2-login'
+import axios from 'axios'
 
 function App() {
   const onSuccess = async (res) => {
     const accessToken = res.access_token
     const result = await fetch(
-      `https://graph.facebook.com/me?fields=id,name,picture&access_token=${accessToken}`
+      `https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${accessToken}`
     )
     const profile = await result.json()
-    console.log(profile)
+    const { id, name } = profile
+    const avatar = profile.picture.data.url
+    const callAPI = await axios.post('http://localhost:4444/api/auth/fb', {
+      id,
+      name,
+      avatar
+    })
+    console.log(callAPI)
   }
 
   const onFailure = (res) => {

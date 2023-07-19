@@ -8,6 +8,8 @@ import {
 } from './token.service.js'
 import UserModel from '../models/user.model.js'
 import ApiError from '../ErrorValidation/ApiError.js'
+import { FBDto } from '../dto/FB_Dto.js'
+import SocialModel from '../models/social.model.js'
 
 export async function registrationService(email, password, userName) {
   const candidate = await UserModel.findOne({ email })
@@ -52,6 +54,32 @@ export async function loginService(email, password) {
   return {
     ...tokens,
     user: userDto
+  }
+}
+
+export async function authorizationWithFBService(id, name, avatar) {
+  const checkId = await SocialModel.findOne({ serviceId: id })
+
+  if (checkId) {
+    const userDto = new FBDto(checkId)
+    const tokens = generateTokens({ ...userDto })
+    await saveToken(userDto.id, tokens.refreshToken)
+    return {
+      ...tokens,
+      user: userDto
+    }
+  } else {
+    const newUser = new SocialModel({ serviceId: id, name, avatar })
+    const result = await newUser.save()
+    const userDto = new UserDto(result)
+
+    console.log(result)
+    const tokens = generateTokens({ ...userDto })
+
+    return {
+      ...tokens,
+      user: userDto
+    }
   }
 }
 

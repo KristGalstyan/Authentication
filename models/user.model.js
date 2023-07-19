@@ -11,7 +11,8 @@ const UserModel = mongoose.Schema({
     required: true
   },
   userName: {
-    type: String
+    type: String,
+    required: true
   }
 })
 

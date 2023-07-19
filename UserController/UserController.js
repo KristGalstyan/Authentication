@@ -3,7 +3,8 @@ import ApiError from '../ErrorValidation/ApiError.js'
 import {
   loginService,
   registrationService,
-  refreshService
+  refreshService,
+  authorizationWithFBService
 } from '../service/user.service.js'
 import { removeToken } from '../service/token.service.js'
 
@@ -73,5 +74,18 @@ export async function refresh(req, res, next) {
     return res.json(userData)
   } catch (e) {
     next(e)
+  }
+}
+
+export async function loginWithFacebook(req, res, next) {
+  try {
+    const { id, name, avatar } = req.body
+    const userData = await authorizationWithFBService(id, name, avatar)
+    res.cookie('refreshToken', userData.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    })
+    return res.json(userData)
+  } catch (e) {
+    console.log(e)
   }
 }
