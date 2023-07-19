@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import OAuth2Login from 'react-simple-oauth2-login'
 
 function App() {
+  const onSuccess = (res) => {
+    console.log(res)
+  }
+
+  const onFailure = (res) => {
+    console.log(res)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <OAuth2Login
+        buttonText="Login with Facebook"
+        authorizationUrl="https://www.facebook.com/dialog/oauth"
+        responseType="token"
+        clientId="139603582496424"
+        redirectUri="http://localhost:3000"
+        onSuccess={onSuccess}
+        onFailure={onFailure}
+      />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
