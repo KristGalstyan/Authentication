@@ -13,19 +13,36 @@ export const ProfileWrapper = styled.div`
   border-radius: 20px;
 `
 export const UserImg = styled.img`
+  cursor: pointer;
   max-width: 100px;
   height: 170px;
+  &:hover {
+    border-radius: 30px;
+    border: 3px solid black;
+    padding: 10px;
+  }
 `
 export const UserName = styled.p`
   font-size: 23px;
 `
+export const Input = styled.input`
+  width: 0;
+  height: 0;
+  border: none;
+  visibility: hidden;
+`
 
 export const ListAboutMe = styled.p`
-  max-width: 250px;
+  cursor: pointer;
+  min-width: 100px;
   min-height: 30px;
   border: 1px solid black;
+  border-radius: 10px;
+  &:hover {
+    background: red;
+  }
 `
-export const List = styled.p`
+export const List = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;

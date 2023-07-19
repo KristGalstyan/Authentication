@@ -2,7 +2,6 @@ import ApiError from '../ErrorValidation/ApiError.js'
 import { validateAccessToken } from '../service/token.service.js'
 
 export const AuthMiddleware = (req, res, next) => {
-  console.log(4)
   try {
     const authorizationHeader = req.headers.authorization
     if (!authorizationHeader) {
@@ -14,6 +13,7 @@ export const AuthMiddleware = (req, res, next) => {
       return next(ApiError.UnauthorizedError())
     }
     const user = validateAccessToken(accessToken)
+
     if (!user) {
       return next(ApiError.UnauthorizedError())
     }

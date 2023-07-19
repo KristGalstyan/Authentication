@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import OAuth2Login from 'react-simple-oauth2-login'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   HomeWrapper,
   BlockAuth,
@@ -22,7 +22,7 @@ import {
   AdText
 } from './styles.js'
 import { useForm } from 'react-hook-form'
-import { $api } from '../../axios.js'
+import { fetchLogin, fetchSocial } from '../../redux/slices/auth.slice.js'
 
 function SignIn() {
   const {
@@ -32,8 +32,8 @@ function SignIn() {
     reset
   } = useForm({
     defaultValues: {
-      email: '',
-      password: ''
+      email: 'dsaa@Md.ru',
+      password: 'dsada'
     },
     mode: 'all'
   })
@@ -41,13 +41,13 @@ function SignIn() {
   const navigate = useNavigate()
 
   const signSubmit = (values) => {
-    // dispatch(fetchLogin(values))
-    //   .then(() => {
-    //     navigate('/')
-    //   })
-    //   .catch(() => {
-    //     return alert('Не удалось авторизоваться!')
-    //   })
+    dispatch(fetchLogin(values))
+      .then(() => {
+        navigate('/profile')
+      })
+      .catch(() => {
+        return alert('Не удалось авторизоваться!')
+      })
     reset()
   }
 
@@ -59,12 +59,9 @@ function SignIn() {
     const profile = await result.json()
     const { id, name } = profile
     const avatar = profile.picture.data.url
-    const callAPI = await $api.post('/auth/fb', {
-      id,
-      name,
-      avatar
-    })
-    console.log(callAPI)
+    const callAPI = dispatch(fetchSocial(id, name, avatar))
+    navigate('/profile')
+    return callAPI
   }
 
   const onFailure = (res) => {
@@ -84,7 +81,7 @@ function SignIn() {
             <BlockAuthInputWrapper>
               <InputAuth
                 style={
-                  !!errors.password?.message
+                  !!errors.email?.message
                     ? { border: '2px solid red' }
                     : { border: '3px solid black' }
                 }
@@ -93,7 +90,7 @@ function SignIn() {
                 <Input
                   {...register('email', { required: 'Укажите E-Mail' })}
                   type="email"
-                  placeholder="Email"
+                  placeholder={errors.email?.message}
                   name="email"
                 />
               </InputAuth>
@@ -106,9 +103,9 @@ function SignIn() {
               >
                 <AuthInputImg src="/img/padlock.png" alt="user" />
                 <Input
-                  {...register('email', { required: 'Укажите Password' })}
+                  {...register('password', { required: 'Укажите Password' })}
                   type="password"
-                  placeholder="Password"
+                  placeholder={errors.password?.message}
                   name="password"
                 />
               </InputAuth>

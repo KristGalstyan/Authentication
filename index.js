@@ -5,7 +5,6 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import dotenv from 'dotenv'
 import { errormiddleware } from './middleware/error.middleware.js'
-import { AuthMiddleware } from './middleware/auth.middleware.js'
 import multer from 'multer'
 
 dotenv.config()
@@ -19,7 +18,6 @@ app.use(
     optionsSuccessStatus: 200
   })
 )
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads')
@@ -31,17 +29,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-app.use(express.json())
-app.use(cookieParser())
-
 app.use('/upload', express.static('uploads'))
 
-app.post('/upload', AuthMiddleware, upload.single('image'), (req, res) => {
-  res.json({
-    url: `/uploads/${req.file.originalname}`
-  })
-})
+app.post(
+  '/upload',
 
+  upload.single('image'),
+  (req, res) => {
+    res.json({
+      url: `http://localhost:4444/upload/${req.file.originalname}`
+    })
+  }
+)
+app.use(express.json())
+
+app.use(cookieParser())
 mongoose
   .connect(process.env.DATA_BASE, {
     useNewUrlParser: true,
