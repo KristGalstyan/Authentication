@@ -13,4 +13,4 @@
 
 # Image Web Page
 
-![HeadImg](https://github.com/KristGalstyan/Authentication/blob/main/assets/img/ForGitHubjpg.jpg)
+![HeadImg](https://github.com/KristGalstyan/Authentication/blob/main/client/public/img/ForGitHub.jpg)
