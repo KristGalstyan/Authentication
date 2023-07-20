@@ -13,9 +13,12 @@ import {
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 import { useAction } from '../../hook/useAction'
 
 function Profile() {
+  const { t } = useTranslation(['profile'])
+
   const navigate = useNavigate()
   const { deleteFromToDo, pushToDo } = useAction()
   const { data } = useSelector((state) => state.sign)
@@ -61,7 +64,7 @@ function Profile() {
           alignItems: 'center'
         }}
       >
-        <strong>Click on the photo to change the image</strong>
+        <strong>{t('text')}</strong>
         <img
           src="/img/down-arrow.png"
           alt="down arrow"
@@ -103,7 +106,7 @@ function Profile() {
         <AboutMe
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Write Something"
+          placeholder={t('placeholder')}
         ></AboutMe>
         <SaveBtn onClick={() => pushToDo(value)} src="/img/add.png" />
       </About>
