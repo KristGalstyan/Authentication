@@ -54,9 +54,9 @@ function App() {
                     {i === 0
                       ? t('btnHome')
                       : i === 1
-                      ? t('btnSingIn')
-                      : i === 2
                       ? t('btnSignUp')
+                      : i === 2
+                      ? t('btnSingIn')
                       : ''}
                   </Button>
                 </Link>

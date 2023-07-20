@@ -23,7 +23,7 @@ import { $api } from '../../axios'
 import { useTranslation } from 'react-i18next'
 
 function SignUp() {
-  const { t } = useTranslation(['signIn'])
+  const { t } = useTranslation(['signUp'])
 
   const onSuccess = async (res) => {
     const accessToken = res.access_token
