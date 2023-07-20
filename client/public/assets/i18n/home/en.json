@@ -3,5 +3,9 @@
   "choose": "Choose Language",
   "welcome": "Welcome",
   "text": "The customer is very important, the customer will be followed by the customer. The ship is now ready to be pursued by the eleifend. Even the real estate is neither refundable, nor is it just called basketball.",
-  "footer": "My Authentication Website. All rights reserved."
+  "footer": "My Authentication Website. All rights reserved.",
+  "btnHome": "Home",
+  "btnSingIn": "Sign In",
+  "btnSignUp": "Sign Up",
+  "btnLogOut": "Log Out"
 }

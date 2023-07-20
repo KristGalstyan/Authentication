@@ -20,8 +20,11 @@ import {
   AdText
 } from '../sign/styles'
 import { $api } from '../../axios'
+import { useTranslation } from 'react-i18next'
 
 function SignUp() {
+  const { t } = useTranslation(['signIn'])
+
   const onSuccess = async (res) => {
     const accessToken = res.access_token
     const result = await fetch(
@@ -45,11 +48,9 @@ function SignUp() {
     <>
       <HomeWrapper>
         <BlockAuth>
-          <BlockAuthTitle>Sign Up</BlockAuthTitle>
+          <BlockAuthTitle>{t('sign')}</BlockAuthTitle>
           <UnknownUser src="img/unknown.png"></UnknownUser>
-          <BlockAuthText>
-            How to i get started lorem ipsum dolor at?
-          </BlockAuthText>
+          <BlockAuthText>{t('text')}</BlockAuthText>
           <BlockAuthInputWrapper width>
             <InputAuth>
               <AuthInputImg src="/img/user.png" alt="user" />
@@ -65,10 +66,10 @@ function SignUp() {
             </InputAuth>
           </BlockAuthInputWrapper>
           <BlockAuthButton>
-            <span>Sign Up Now</span>
+            <span>{t('btnSubmit')}</span>
           </BlockAuthButton>
           <BlockAuthOther>
-            <AuthOtherText>Login with Other</AuthOtherText>
+            <AuthOtherText>{t('signOther')}</AuthOtherText>
             <AuthOtherSocial>
               <AuthInputImg
                 src="/img/facebook.png"
@@ -76,7 +77,7 @@ function SignUp() {
                 style={{ width: '25px' }}
               />
               <OAuth2Login
-                buttonText="SignUp with Facebook"
+                buttonText={t('btnText')}
                 authorizationUrl="https://www.facebook.com/dialog/oauth"
                 responseType="token"
                 clientId="139603582496424"
@@ -90,11 +91,7 @@ function SignUp() {
         </BlockAuth>
         <BlockAd style={{ backgroundImage: 'url("/img/background.png")' }}>
           <AdWrapper>
-            <AdText>
-              Very good works
-              <br /> are waiting <br />
-              for you SignUp Now!!!
-            </AdText>
+            <AdText>{t('ad')}</AdText>
             <AdImg
               src="https://img.freepik.com/free-vector/mobile-login-concept-illustration_114360-83.jpg?w=2000"
               alt="woman"

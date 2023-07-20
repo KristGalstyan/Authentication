@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   App,
   AppFooter,
@@ -9,31 +9,40 @@ import {
   HeroSection,
   MainBlockWrapper
 } from './style'
+import { useTranslation } from 'react-i18next'
+import i18next from 'i18next'
 
 function Main() {
+  const { i18n, t } = useTranslation(['home'])
+  useEffect(() => {
+    if (localStorage.getItem('i18nextLng')?.length > 2) {
+      i18next.changeLanguage('en')
+    }
+  }, [])
+
+  const handleLanguageChange = (e) => {
+    i18n.changeLanguage(e.target.value)
+  }
+
   return (
     <MainBlockWrapper>
       <App>
         <AppHeader className="app-header">
-          <h1>My Authentication Site</h1>
+          <h1>{t('title')}</h1>
           <Container>
-            <Container>Choose Language</Container>
-            <select>
+            <Container>{t('choose')}</Container>
+            <select onChange={(e) => handleLanguageChange(e)}>
               <option value="en">English</option>
-              <option value="ru">Russian</option>
-              <option value="am">Armenian</option>
+              <option value="ru">Русский</option>
+              <option value="am">Հայերեն</option>
             </select>
           </Container>
         </AppHeader>
         <AppMain>
           <HeroSection>
             <HeroContent>
-              <h2>Welcome</h2>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Phasellus sit amet nunc sit amet velit consectetur eleifend.
-                Etiam mattis est nec neque eleifend, vel ultrices justo dictum.
-              </p>
+              <h2>{t('welcome')}</h2>
+              <p>{t('text')}</p>
               <img
                 src="https://st2.depositphotos.com/3591429/7157/i/600/depositphotos_71573471-stock-photo-man-working-on-computer-with.jpg"
                 alt="about"
@@ -43,8 +52,7 @@ function Main() {
         </AppMain>
         <AppFooter>
           <p>
-            &copy; {new Date().getFullYear()} My Authentication Website. All
-            rights reserved.
+            &copy; {new Date().getFullYear()} {t('footer')}
           </p>
         </AppFooter>
       </App>

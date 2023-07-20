@@ -21,10 +21,13 @@ import {
   AdWrapper,
   AdText
 } from './styles.js'
+import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form'
 import { fetchLogin, fetchSocial } from '../../redux/slices/auth.slice.js'
 
 function SignIn() {
+  const { t } = useTranslation(['signIn'])
+
   const {
     register,
     handleSubmit,
@@ -71,11 +74,9 @@ function SignIn() {
     <>
       <HomeWrapper>
         <BlockAuth>
-          <BlockAuthTitle>Sign In</BlockAuthTitle>
+          <BlockAuthTitle>{t('sign')}</BlockAuthTitle>
           <UnknownUser src="img/unknown.png"></UnknownUser>
-          <BlockAuthText>
-            How to i get started lorem ipsum dolor at?
-          </BlockAuthText>
+          <BlockAuthText>{t('text')}</BlockAuthText>
 
           <form onSubmit={handleSubmit(signSubmit)}>
             <BlockAuthInputWrapper>
@@ -116,11 +117,11 @@ function SignIn() {
                 !isValid ? { cursor: 'not-allowed' } : { cursor: 'pointer' }
               }
             >
-              <span>Sign In Now</span>
+              <span>{t('btnSubmit')}</span>
             </BlockAuthButton>
           </form>
           <BlockAuthOther>
-            <AuthOtherText>SignIn with Other</AuthOtherText>
+            <AuthOtherText>{t('signOther')}</AuthOtherText>
             <AuthOtherSocial>
               <AuthInputImg
                 src="/img/facebook.png"
@@ -128,7 +129,7 @@ function SignIn() {
                 style={{ width: '25px' }}
               />
               <OAuth2Login
-                buttonText="Login with Facebook"
+                buttonText={t('btnText')}
                 authorizationUrl="https://www.facebook.com/dialog/oauth"
                 responseType="token"
                 clientId="139603582496424"
@@ -142,11 +143,7 @@ function SignIn() {
         </BlockAuth>
         <BlockAd style={{ backgroundImage: 'url("/img/background.png")' }}>
           <AdWrapper>
-            <AdText>
-              Very good works
-              <br /> are waiting <br />
-              for you SignIn Now!!!
-            </AdText>
+            <AdText>{t('ad')}</AdText>
             <AdImg src="/img/woman.png" alt="woman" />
           </AdWrapper>
         </BlockAd>

@@ -9,8 +9,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { checkAuth, fetchLogout } from './redux/slices/auth.slice'
 import { Suspense, useEffect } from 'react'
 import { headerButton } from './data/buttons'
+import { useTranslation } from 'react-i18next'
 
 function App() {
+  const { t } = useTranslation(['home'])
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -48,7 +50,15 @@ function App() {
                     overflow: 'hidden'
                   }}
                 >
-                  <Button>{elm.text}</Button>
+                  <Button>
+                    {i === 0
+                      ? t('btnHome')
+                      : i === 1
+                      ? t('btnSingIn')
+                      : i === 2
+                      ? t('btnSignUp')
+                      : ''}
+                  </Button>
                 </Link>
               )
             })}
@@ -88,7 +98,7 @@ function App() {
               }}
               onClick={logOutHandler}
             >
-              Log Out
+              {t('btnLogOut')}
             </Button>
           </div>
         )}
