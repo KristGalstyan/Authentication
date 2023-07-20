@@ -69,11 +69,10 @@ export async function authorizationWithFBService(id, name, avatar) {
       user: userDto
     }
   } else {
-    const newUser = new SocialModel({ serviceId: id, name, avatar })
+    const newUser = await SocialModel.create({ serviceId: id, name, avatar })
     const result = await newUser.save()
-    const userDto = new UserDto(result)
 
-    console.log(result)
+    const userDto = new FBDto(result)
     const tokens = generateTokens({ ...userDto })
 
     return {

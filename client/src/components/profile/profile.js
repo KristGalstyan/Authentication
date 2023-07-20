@@ -26,8 +26,8 @@ export const UserName = styled.p`
   font-size: 23px;
 `
 export const Input = styled.input`
-  width: 0;
-  height: 0;
+  width: 0px;
+  height: 0px;
   border: none;
   visibility: hidden;
 `

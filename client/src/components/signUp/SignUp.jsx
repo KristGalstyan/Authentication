@@ -19,31 +19,60 @@ import {
   AdWrapper,
   AdText
 } from '../sign/styles'
-import { $api } from '../../axios'
+
 import { useTranslation } from 'react-i18next'
+import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { fetchRegistr, fetchSocial } from '../../redux/slices/auth.slice'
 
 function SignUp() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    reset
+  } = useForm({
+    defaultValues: {
+      userName: '',
+      email: '',
+      password: ''
+    },
+    mode: 'all'
+  })
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { t } = useTranslation(['signUp'])
+
+  const signSubmit = (values) => {
+    dispatch(fetchRegistr(values))
+      .then(() => {
+        navigate('/profile')
+      })
+      .catch(() => {
+        return alert('Не удалось авторизоваться!')
+      })
+    reset()
+  }
 
   const onSuccess = async (res) => {
     const accessToken = res.access_token
     const result = await fetch(
       `https://graph.facebook.com/me?fields=id,name,picture.type(large)&access_token=${accessToken}`
     )
+
     const profile = await result.json()
     const { id, name } = profile
     const avatar = profile.picture.data.url
-    const callAPI = await $api.post('/auth/fb', {
-      id,
-      name,
-      avatar
-    })
-    console.log(callAPI)
+    const callAPI = dispatch(fetchSocial({ id, name, avatar }))
+    navigate('/profile')
+    return callAPI
   }
 
   const onFailure = (res) => {
     console.log(res)
   }
+
   return (
     <>
       <HomeWrapper>
@@ -51,23 +80,63 @@ function SignUp() {
           <BlockAuthTitle>{t('sign')}</BlockAuthTitle>
           <UnknownUser src="img/unknown.png"></UnknownUser>
           <BlockAuthText>{t('text')}</BlockAuthText>
-          <BlockAuthInputWrapper width>
-            <InputAuth>
-              <AuthInputImg src="/img/user.png" alt="user" />
-              <Input type="text" placeholder="User Name" name="name" />
-            </InputAuth>
-            <InputAuth>
-              <AuthInputImg src="/img/email.png" alt="user" />
-              <Input type="email" placeholder="Email" name="email" />
-            </InputAuth>
-            <InputAuth>
-              <AuthInputImg src="/img/padlock.png" alt="user" />
-              <Input type="password" placeholder="Password" name="password" />
-            </InputAuth>
-          </BlockAuthInputWrapper>
-          <BlockAuthButton>
-            <span>{t('btnSubmit')}</span>
-          </BlockAuthButton>
+          <form onSubmit={handleSubmit(signSubmit)}>
+            <BlockAuthInputWrapper width={'true'}>
+              <InputAuth
+                style={
+                  !!errors.userName?.message
+                    ? { border: '2px solid red' }
+                    : { border: '3px solid black' }
+                }
+              >
+                <AuthInputImg src="/img/user.png" alt="user" />
+                <Input
+                  {...register('userName', { required: 'Укажите ваше имя' })}
+                  type="text"
+                  placeholder={errors.userName?.message}
+                  name="userName"
+                />
+              </InputAuth>
+              <InputAuth
+                style={
+                  !!errors.email?.message
+                    ? { border: '2px solid red' }
+                    : { border: '3px solid black' }
+                }
+              >
+                <AuthInputImg src="/img/email.png" alt="user" />
+                <Input
+                  {...register('email', { required: 'Укажите E-Mail' })}
+                  type="email"
+                  placeholder={errors.email?.message}
+                  name="email"
+                />
+              </InputAuth>
+              <InputAuth
+                style={
+                  !!errors.password?.message
+                    ? { border: '2px solid red' }
+                    : { border: '3px solid black' }
+                }
+              >
+                <AuthInputImg src="/img/padlock.png" alt="user" />
+                <Input
+                  {...register('password', { required: 'Укажите Password' })}
+                  type="password"
+                  placeholder={errors.password?.message}
+                  name="password"
+                />
+              </InputAuth>
+            </BlockAuthInputWrapper>
+            <BlockAuthButton
+              disabled={!isValid}
+              style={
+                !isValid ? { cursor: 'not-allowed' } : { cursor: 'pointer' }
+              }
+            >
+              <span>{t('btnSubmit')}</span>
+            </BlockAuthButton>
+          </form>
           <BlockAuthOther>
             <AuthOtherText>{t('signOther')}</AuthOtherText>
             <AuthOtherSocial>

@@ -52,7 +52,7 @@ function Profile() {
   }
 
   function handleInput() {
-    console.log(ref.current.click())
+    ref.current.click()
   }
 
   return (

@@ -53,7 +53,6 @@ export async function login(req, res, next) {
 export async function logout(req, res, next) {
   try {
     const { refreshToken } = req.cookies
-    console.log(req.cookies)
     const token = await removeToken(refreshToken)
     res.clearCookie('refreshToken')
     res.status(200).json(token)
@@ -86,6 +85,7 @@ export async function loginWithFacebook(req, res, next) {
     })
     return res.json(userData)
   } catch (e) {
+    console.log(e)
     next(e)
   }
 }

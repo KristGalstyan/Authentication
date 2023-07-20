@@ -32,12 +32,12 @@ export const checkAuth = createAsyncThunk('fetch/checkAuth', async () => {
   return $api.get('/refresh', { withCredentials: true })
 })
 export const fetchSocial = createAsyncThunk(
-  'fetch/socialAuth',
-  async (id, name, avatar) => {
+  'fetch/socialAuthLogin',
+  async (param) => {
     return $api.post('/auth/fb', {
-      id,
-      name,
-      avatar
+      id: param.id,
+      name: param.name,
+      avatar: param.avatar
     })
   }
 )

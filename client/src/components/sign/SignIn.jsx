@@ -35,8 +35,8 @@ function SignIn() {
     reset
   } = useForm({
     defaultValues: {
-      email: 'dsaa@Md.ru',
-      password: 'dsada'
+      email: '',
+      password: ''
     },
     mode: 'all'
   })
@@ -62,7 +62,7 @@ function SignIn() {
     const profile = await result.json()
     const { id, name } = profile
     const avatar = profile.picture.data.url
-    const callAPI = dispatch(fetchSocial(id, name, avatar))
+    const callAPI = dispatch(fetchSocial({ id, name, avatar }))
     navigate('/profile')
     return callAPI
   }
