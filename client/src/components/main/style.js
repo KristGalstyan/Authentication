@@ -4,7 +4,8 @@ export const MainBlockWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 100%;
+  margin: 0 auto;
+  max-width: 900px;
   min-height: 650px;
   background: #f8fcfc;
 `
@@ -60,4 +61,11 @@ export const AppFooter = styled.div`
   p {
     margin: 0;
   }
+`
+
+export const Container = styled.div`
+  width: 500px;
+  margin: 50px auto 0;
+  text-align: center;
+  font-size: 22px;
 `

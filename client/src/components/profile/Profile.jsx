@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   About,
   AboutMe,
@@ -10,19 +10,25 @@ import {
   UserImg,
   UserName
 } from './profile'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { actions } from '../../redux/slices/todo.slice'
 import axios from 'axios'
+import { useAction } from '../../hook/useAction'
 
 function Profile() {
+  const navigate = useNavigate()
+  const { deleteFromToDo, pushToDo } = useAction()
   const { data } = useSelector((state) => state.sign)
+  useEffect(() => {
+    if (!data) {
+      navigate('/')
+    }
+  }, [])
   const { todo } = useSelector((state) => state.todo)
   const [img, setImg] = useState('')
   const [value, setValue] = useState('')
-  const dispatch = useDispatch()
 
-  const navigate = useNavigate()
+  const ref = useRef()
 
   async function sendPhotoToServer(photo) {
     try {
@@ -42,6 +48,10 @@ function Profile() {
     }
   }
 
+  function handleInput() {
+    console.log(ref.current.click())
+  }
+
   return (
     <ProfileWrapper>
       <div
@@ -58,17 +68,18 @@ function Profile() {
           style={{ width: '30px' }}
         />
         <UserImg
+          onClick={() => handleInput()}
           src={
-            data?.user?.avatar || data?.avatar
-              ? data?.user?.avatar
-              : img ||
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlSdPlC4NmToI9yullNIXNb-voI9An-tN4414hn6g28zwTdlWJbJWHonHJ7SG-6bfDt10&usqp=CAU'
+            img || data?.user?.avatar || data?.avatar
+              ? data?.user?.avatar || img || data?.avatar
+              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlSdPlC4NmToI9yullNIXNb-voI9An-tN4414hn6g28zwTdlWJbJWHonHJ7SG-6bfDt10&usqp=CAU'
           }
         />
       </div>
       <Input
         type="file"
         name="image"
+        ref={ref}
         onChange={(e) => sendPhotoToServer(e.target.files[0])}
       />
       <UserName>
@@ -82,10 +93,7 @@ function Profile() {
       <List>
         {todo.map((elm, i) => {
           return (
-            <ListAboutMe
-              onClick={() => dispatch(actions.deleteFromToDo(i))}
-              key={elm + i}
-            >
+            <ListAboutMe onClick={() => deleteFromToDo(i)} key={elm + i}>
               {elm}
             </ListAboutMe>
           )
@@ -97,10 +105,7 @@ function Profile() {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Write Something"
         ></AboutMe>
-        <SaveBtn
-          onClick={() => dispatch(actions.pushToDo(value))}
-          src="/img/add.png"
-        />
+        <SaveBtn onClick={() => pushToDo(value)} src="/img/add.png" />
       </About>
     </ProfileWrapper>
   )

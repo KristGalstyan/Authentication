@@ -4,7 +4,7 @@ import {
   AppFooter,
   AppHeader,
   AppMain,
-  Button,
+  Container,
   HeroContent,
   HeroSection,
   MainBlockWrapper
@@ -16,6 +16,14 @@ function Main() {
       <App>
         <AppHeader className="app-header">
           <h1>My Authentication Site</h1>
+          <Container>
+            <Container>Choose Language</Container>
+            <select>
+              <option value="en">English</option>
+              <option value="ru">Russian</option>
+              <option value="am">Armenian</option>
+            </select>
+          </Container>
         </AppHeader>
         <AppMain>
           <HeroSection>
